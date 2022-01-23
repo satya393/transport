@@ -18,17 +18,18 @@ public class UserDetailsController {
 
 	@Autowired
 	UserDetailsRepository userDetailsRepository;
-
+	
 	@GetMapping
-	public List<UserDetails> getUserDetails() {
-		return userDetailsRepository.findAll();
-
+	public List<UserDetails> getUserDetails()
+	{
+		return  userDetailsRepository.findAll();
+		
 	}
-
+	
 	@PostMapping
 	public UserDetails saveUserDetails(@RequestBody UserDetails userDetails) {
-
+		
 		return userDetailsRepository.save(userDetails);
 	}
-
+	
 }
