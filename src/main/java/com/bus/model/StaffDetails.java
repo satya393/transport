@@ -13,11 +13,11 @@ public class StaffDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer staffId;
-	public String StaffIdCard;
-	public String StaffName;
-	public Integer StaffNumber;
-	public String StaffAddress;
-	public String StaffStatus;
+	public String staffIdCard;
+	public String staffName;
+	public Integer staffNumber;
+	public String staffAddress;
+	public Boolean staffStatus;
 
 	public Integer getStaffId() {
 		return staffId;
@@ -28,43 +28,43 @@ public class StaffDetails {
 	}
 
 	public String getStaffIdCard() {
-		return StaffIdCard;
+		return staffIdCard;
 	}
 
 	public void setStaffIdCard(String staffIdCard) {
-		StaffIdCard = staffIdCard;
+		this.staffIdCard = staffIdCard;
 	}
 
 	public String getStaffName() {
-		return StaffName;
+		return staffName;
 	}
 
 	public void setStaffName(String staffName) {
-		StaffName = staffName;
+		this.staffName = staffName;
 	}
 
 	public Integer getStaffNumber() {
-		return StaffNumber;
+		return staffNumber;
 	}
 
 	public void setStaffNumber(Integer staffNumber) {
-		StaffNumber = staffNumber;
+		this.staffNumber = staffNumber;
 	}
 
 	public String getStaffAddress() {
-		return StaffAddress;
+		return staffAddress;
 	}
 
 	public void setStaffAddress(String staffAddress) {
-		StaffAddress = staffAddress;
+		this.staffAddress = staffAddress;
 	}
 
-	public String getStaffStatus() {
-		return StaffStatus;
+	public Boolean getStaffStatus() {
+		return staffStatus;
 	}
 
-	public void setStaffStatus(String staffStatus) {
-		StaffStatus = staffStatus;
+	public void setStaffStatus(Boolean staffStatus) {
+		this.staffStatus = staffStatus;
 	}
 
 }
