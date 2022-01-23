@@ -17,6 +17,7 @@ public class OfficeDetails {
 	public String officeBranch;
 	public String officeAddress;
 	public String office_phone_number;
+	
 	public Integer getOfficeId() {
 		return OfficeId;
 	}
