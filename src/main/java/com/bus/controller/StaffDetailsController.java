@@ -20,7 +20,5 @@ public class StaffDetailsController {
 	public StaffDetails saveStaffDetails(@RequestBody StaffDetails staffDetails) {
 		return staffDetailsRepository.save(staffDetails);
 	}
-	
-	
 
 }
