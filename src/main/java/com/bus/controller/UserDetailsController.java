@@ -10,25 +10,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bus.model.UserDetails;
-import com.bus.repository.UserDetailsRepository;
+import com.bus.service.UserDetailsService;
 
 @RestController
 @RequestMapping("/user")
 public class UserDetailsController {
 
 	@Autowired
-	UserDetailsRepository userDetailsRepository;
+	UserDetailsService userdetailsservice;
 
-	@GetMapping
+	@GetMapping(value = "getuser")
 	public List<UserDetails> getUserDetails() {
-		return userDetailsRepository.findAll();
+		return userdetailsservice.getUserDetails();
 
 	}
 
-	@PostMapping
+	@PostMapping(value = "save_User")
 	public UserDetails saveUserDetails(@RequestBody UserDetails userDetails) {
 
-		return userDetailsRepository.save(userDetails);
+	return userdetailsservice.saveUserDetails(userDetails);
 	}
 
 }
