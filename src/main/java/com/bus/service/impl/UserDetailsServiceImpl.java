@@ -4,6 +4,7 @@ package com.bus.service.impl;
 
 import java.util.List;
 
+import org.hibernate.query.criteria.internal.expression.function.AggregationFunction.COUNT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,9 +32,10 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 		UserDetails UserEmailObj=userdetailsrepository.findByuserEmail(userDetails.getUserEmail());
 		UserDetails UserNumberObj=userdetailsrepository.findByuserNumber(userDetails.getUserNumber());
 	//	if(userDetails.getUserName().isEmpty()&&(userDetails.getUserName()!=null)){
+		
 			if((UserNumberObj==null)&&(UserEmailObj==null)|| (UserNewNumber!= null)){
 				userDetails.setUserNumber(userDetails.getUserNumber());
-				if (UserNumberObj Length == 0) {
+				if (UserNumberObj (COUNT() == 0)) {
 					
 					UserDetails UserDetailsDb=userdetailsrepository.save(userDetails);
 					
