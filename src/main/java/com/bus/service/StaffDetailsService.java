@@ -8,13 +8,6 @@ public interface StaffDetailsService {
 
 	List<StaffDetails> getStaffDetails();
 
-
 	StaffDetails saveStaffDetails(StaffDetails staffDetails);
-
-
-
-
-
-	
 
 }

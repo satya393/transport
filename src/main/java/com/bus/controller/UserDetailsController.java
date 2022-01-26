@@ -1,5 +1,6 @@
 package com.bus.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,10 @@ public class UserDetailsController {
 
 	}
 
-	@PostMapping(value = "save_User")
-	public UserDetails saveUserDetails(@RequestBody UserDetails userDetails) {
+	@PostMapping(value = "save_user")
+	public UserDetails saveOrUpdateUserDetails(@RequestBody UserDetails userDetails) throws IOException {
 
-	return userdetailsservice.saveUserDetails(userDetails);
+	return userdetailsservice.saveOrUpdateUserDetails(userDetails);
 	}
 
 }

@@ -5,15 +5,11 @@ import org.springframework.stereotype.Repository;
 
 import com.bus.model.UserDetails;
 
-
 @Repository
 public interface UserDetailsRepository extends JpaRepository<UserDetails, Integer> {
 
-	UserDetails findByuserEmail(String userEmail);
+	UserDetails findByUserEmail(String userEmail);
 
-	UserDetails findByuserNumber(Integer userNumber);
-
-
-	
+	UserDetails findByUserPhoneNumber(String userPhoneNumber);
 
 }
