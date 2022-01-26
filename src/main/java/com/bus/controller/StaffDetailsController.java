@@ -11,13 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bus.model.StaffDetails;
 import com.bus.service.StaffDetailsService;
+//import com.bus.service.StaffDetailsService;
 
 @RestController
-@RequestMapping("/staffDetails")
+@RequestMapping(value = "/staffDetails")
 public class StaffDetailsController {
 
 	@Autowired
-	StaffDetailsService staffdetailsservice;
+	StaffDetailsService  staffdetailsservice;
 	
 	@GetMapping(value = "/get_staffDetails")
 	public List<StaffDetails> getStaffDetails(){

@@ -2,6 +2,7 @@ package com.bus.service.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bus.model.StaffDetails;
@@ -10,7 +11,7 @@ import com.bus.service.StaffDetailsService;
 
 @Service
 public class StaffDetailsServiceImpl  implements StaffDetailsService{
-	
+	@Autowired
 	StaffDetailsRepository staffdetailsrepository;
 
 	@Override
@@ -20,10 +21,8 @@ public class StaffDetailsServiceImpl  implements StaffDetailsService{
 
 	@Override
 	public StaffDetails saveStaffDetails(StaffDetails staffDetails) {
-		StaffDetails sd=new StaffDetails();
-		sd.setStaffId(staffDetails.getStaffId());
-		sd.setStaffName(staffDetails.getStaffName());
-		return staffdetailsrepository.save(sd);
+		 
+		return staffdetailsrepository.save(staffDetails);
 	}
 
 }
