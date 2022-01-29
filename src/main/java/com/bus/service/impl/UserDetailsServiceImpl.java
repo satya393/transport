@@ -21,24 +21,36 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		return userdetailsrepository.findAll();
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public UserDetails saveOrUpdateUserDetails(UserDetails userDetails) throws IOException {
 		UserDetails userDetailsResponseObj = null;
 		UserDetails userEmailDbObject = userdetailsrepository.findByUserEmail(userDetails.getUserEmail());
 		UserDetails userPhoneDbObject = userdetailsrepository.findByUserPhoneNumber(userDetails.getUserPhoneNumber());
 		Integer userId = userDetails.getUserId();
-		if (userDetails.getUserId() != null) {
-			if (userEmailDbObject.getUserId() == userId || userEmailDbObject.getUserId() == userId) {
+		Integer userEmailID = userEmailDbObject == null ? 0 : userEmailDbObject.getUserId();
+		Integer userPhoneID = userPhoneDbObject == null ? 0 : userPhoneDbObject.getUserId();
+		if (userId != null) {
+			if (userEmailID == userId || userPhoneID == userId) {
 				userDetailsResponseObj = saveUserDetails(userDetails);
 			} else {
-				throw new IOException("This phone number or email is already registered by someone");
+				userDetailsResponseObj = saveValidateUserDetails(userDetails, userEmailDbObject, userPhoneDbObject);
 			}
 		} else {
-			if (userEmailDbObject == null && userPhoneDbObject == null) {
-				userDetailsResponseObj = saveUserDetails(userDetails);
-			} else {
-				throw new IOException("This phone number or email is already registered by someone");
-			}
+			userDetailsResponseObj = saveValidateUserDetails(userDetails, userEmailDbObject, userPhoneDbObject);
+		}
+		return userDetailsResponseObj;
+	}
+
+	private UserDetails saveValidateUserDetails(UserDetails userDetails, UserDetails userEmailDbObject,
+			UserDetails userPhoneDbObject) throws IOException {
+		UserDetails userDetailsResponseObj = null;
+		if (userEmailDbObject == null && userPhoneDbObject == null) {
+			userDetailsResponseObj = saveUserDetails(userDetails);
+		} else if (userPhoneDbObject != null&& userPhoneDbObject.getUserId()!=userDetails.getUserId()) {
+			throw new IOException("This phone number is already registered by someone");
+		} else if (userEmailDbObject != null) {
+			throw new IOException("This EmailID is already registered by someone");
 		}
 		return userDetailsResponseObj;
 	}
