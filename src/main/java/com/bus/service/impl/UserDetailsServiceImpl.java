@@ -13,7 +13,7 @@ import com.bus.service.UserDetailsService;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-
+	public static Integer ZERO = BigDecimal.ZERO.intValue();
 	@Autowired
 	UserDetailsRepository userdetailsrepository;
 
@@ -22,23 +22,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		return userdetailsrepository.findAll();
 	}
 
-	@SuppressWarnings("unused")
 	@Override
 	public UserDetails saveOrUpdateUserDetails(UserDetails userDetails) throws IOException {
 		UserDetails userDetailsResponseObj = null;
 		Integer userId = userDetails.getUserId();
 		UserDetails userEmailDbObject = userdetailsrepository.findByUserEmail(userDetails.getUserEmail());
 		UserDetails userPhoneDbObject = userdetailsrepository.findByUserPhoneNumber(userDetails.getUserPhoneNumber());
-		Integer userEmailID = userEmailDbObject == null ? BigDecimal.ZERO.intValue() : userEmailDbObject.getUserId();
-		Integer userPhoneID = userPhoneDbObject == null ? BigDecimal.ZERO.intValue() : userPhoneDbObject.getUserId();
+		Integer userIDEmailDB = userEmailDbObject == null ? ZERO : userEmailDbObject.getUserId();
+		Integer userIDPhoneDB = userPhoneDbObject == null ? ZERO : userPhoneDbObject.getUserId();
 
-		if ((userPhoneID == userId && userEmailID == BigDecimal.ZERO.intValue())
-				|| (userEmailID == userId && userPhoneID == BigDecimal.ZERO.intValue())
-				|| (userEmailID == userId && userPhoneID == userId)) {
+		if ((userIDPhoneDB == userId && userIDEmailDB == ZERO) || (userIDEmailDB == userId && userIDPhoneDB == ZERO)
+				|| (userIDEmailDB == userId && userIDPhoneDB == userId)
+				|| (userEmailDbObject == null && userPhoneDbObject == null)) {
 			userDetailsResponseObj = saveUserDetails(userDetails);
-		} else if (userEmailDbObject == null && userPhoneDbObject == null) {
-			userDetailsResponseObj = saveUserDetails(userDetails);
-		} else if (userPhoneDbObject != null && userPhoneDbObject.getUserId() != userDetails.getUserId()) {
+		} else if (userPhoneDbObject != null && userIDPhoneDB != userId) {
 			throw new IOException("This phone number is already registered by someone");
 		} else if (userEmailDbObject != null) {
 			throw new IOException("This EmailID is already registered by someone");
