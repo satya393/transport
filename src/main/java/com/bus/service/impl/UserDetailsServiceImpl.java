@@ -36,8 +36,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 					userDetailsResponseObj = saveUserDetails(userDetails);
 				} else if (userEmailID == userId && userPhoneID == 0) {
 					userDetailsResponseObj = saveUserDetails(userDetails);
-				}
-				else {
+				} else if (userEmailID == userId && userPhoneID == userId) {
+					userDetailsResponseObj = saveUserDetails(userDetails);
+				} else {
 					userDetailsResponseObj = saveValidateUserDetails(userDetails, userEmailDbObject, userPhoneDbObject);
 				}
 			} else {
