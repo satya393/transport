@@ -32,11 +32,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		Integer userPhoneID = userPhoneDbObject == null ? 0 : userPhoneDbObject.getUserId();
 		if (userId != null) {
 			if (userEmailID == userId || userPhoneID == userId) {
-				if (userPhoneID == userId && userEmailID == 0) {
+				if ((userPhoneID == userId && userEmailID == 0) || (userEmailID == userId && userPhoneID == 0)) {
 					userDetailsResponseObj = saveUserDetails(userDetails);
-				} else if (userEmailID == userId && userPhoneID == 0) {
-					userDetailsResponseObj = saveUserDetails(userDetails);
-				} else if (userEmailID == userId && userPhoneID == userId) {
+				}  else if (userEmailID == userId && userPhoneID == userId) {
 					userDetailsResponseObj = saveUserDetails(userDetails);
 				} else {
 					userDetailsResponseObj = saveValidateUserDetails(userDetails, userEmailDbObject, userPhoneDbObject);
