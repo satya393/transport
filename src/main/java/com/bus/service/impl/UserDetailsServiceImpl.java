@@ -1,10 +1,9 @@
 package com.bus.service.impl;
 
-
-
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
-import org.hibernate.query.criteria.internal.expression.function.AggregationFunction.COUNT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,59 +11,58 @@ import com.bus.model.UserDetails;
 import com.bus.repository.UserDetailsRepository;
 import com.bus.service.UserDetailsService;
 
-import sun.security.util.Length;
-
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService{
-	
-	@Autowired
-	UserDetailsRepository userdetailsrepository ;
+public class UserDetailsServiceImpl implements UserDetailsService {
 
-	
-	
+	@Autowired
+	UserDetailsRepository userdetailsrepository;
+
 	@Override
 	public List<UserDetails> getUserDetails() {
 		return userdetailsrepository.findAll();
 	}
 
+	@SuppressWarnings("unused")
 	@Override
-	public UserDetails saveUserDetails(UserDetails userDetails){
-		UserDetails UserEmailObj=userdetailsrepository.findByuserEmail(userDetails.getUserEmail());
-		UserDetails UserNumberObj=userdetailsrepository.findByuserNumber(userDetails.getUserNumber());
-	//	if(userDetails.getUserName().isEmpty()&&(userDetails.getUserName()!=null)){
-		
-			if((UserNumberObj==null)&&(UserEmailObj==null)|| (UserNewNumber!= null)){
-				userDetails.setUserNumber(userDetails.getUserNumber());
-				if (UserNumberObj (COUNT() == 0)) {
-					
-					UserDetails UserDetailsDb=userdetailsrepository.save(userDetails);
-					
-				}else {
-					//throws IOException("This phone number is allready exist");
+	public UserDetails saveOrUpdateUserDetails(UserDetails userDetails) throws IOException {
+		UserDetails userDetailsResponseObj = null;
+		UserDetails userEmailDbObject = userdetailsrepository.findByUserEmail(userDetails.getUserEmail());
+		UserDetails userPhoneDbObject = userdetailsrepository.findByUserPhoneNumber(userDetails.getUserPhoneNumber());
+		Integer userId = userDetails.getUserId();
+		Integer userEmailID = userEmailDbObject == null ? BigDecimal.ZERO.intValue() : userEmailDbObject.getUserId();
+		Integer userPhoneID = userPhoneDbObject == null ? BigDecimal.ZERO.intValue() : userPhoneDbObject.getUserId();
+		if (userId != null) {
+			if (userEmailID == userId || userPhoneID == userId) {
+				if ((userPhoneID == userId && userEmailID == BigDecimal.ZERO.intValue()) || (userEmailID == userId && userPhoneID == BigDecimal.ZERO.intValue())) {
+					userDetailsResponseObj = saveUserDetails(userDetails);
+				}  else if (userEmailID == userId && userPhoneID == userId) {
+					userDetailsResponseObj = saveUserDetails(userDetails);
+				} else {
+					userDetailsResponseObj = saveValidateUserDetails(userDetails, userEmailDbObject, userPhoneDbObject);
 				}
-				
-			}else 
-			{
-				//throws IOException("username usernumber are manditory");
-			
+			} else {
+				userDetailsResponseObj = saveValidateUserDetails(userDetails, userEmailDbObject, userPhoneDbObject);
 			}
-	//	}
-			
-		UserDetails UserDetailsDb=userdetailsrepository.save(userDetails);
-		
-		
-		return userdetailsrepository.save(UserDetailsDb);
+		} else {
+			userDetailsResponseObj = saveValidateUserDetails(userDetails, userEmailDbObject, userPhoneDbObject);
+		}
+		return userDetailsResponseObj;
 	}
 
-	
+	private UserDetails saveValidateUserDetails(UserDetails userDetails, UserDetails userEmailDbObject,
+			UserDetails userPhoneDbObject) throws IOException {
+		UserDetails userDetailsResponseObj = null;
+		if (userEmailDbObject == null && userPhoneDbObject == null) {
+			userDetailsResponseObj = saveUserDetails(userDetails);
+		} else if (userPhoneDbObject != null && userPhoneDbObject.getUserId() != userDetails.getUserId()) {
+			throw new IOException("This phone number is already registered by someone");
+		} else if (userEmailDbObject != null) {
+			throw new IOException("This EmailID is already registered by someone");
+		}
+		return userDetailsResponseObj;
+	}
 
-	
-	
-
-	
-	
-	
-	
-	
-
+	public UserDetails saveUserDetails(UserDetails userDetails) {
+		return userdetailsrepository.save(userDetails);
+	}
 }
