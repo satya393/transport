@@ -31,21 +31,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		UserDetails userPhoneDbObject = userdetailsrepository.findByUserPhoneNumber(userDetails.getUserPhoneNumber());
 		Integer userEmailID = userEmailDbObject == null ? BigDecimal.ZERO.intValue() : userEmailDbObject.getUserId();
 		Integer userPhoneID = userPhoneDbObject == null ? BigDecimal.ZERO.intValue() : userPhoneDbObject.getUserId();
-		
+
 		if ((userPhoneID == userId && userEmailID == BigDecimal.ZERO.intValue())
 				|| (userEmailID == userId && userPhoneID == BigDecimal.ZERO.intValue())
 				|| (userEmailID == userId && userPhoneID == userId)) {
 			userDetailsResponseObj = saveUserDetails(userDetails);
-		} else {
-			userDetailsResponseObj = saveValidateUserDetails(userDetails, userEmailDbObject, userPhoneDbObject);
-		}
-		return userDetailsResponseObj;
-	}
-
-	private UserDetails saveValidateUserDetails(UserDetails userDetails, UserDetails userEmailDbObject,
-			UserDetails userPhoneDbObject) throws IOException {
-		UserDetails userDetailsResponseObj = null;
-		if (userEmailDbObject == null && userPhoneDbObject == null) {
+		} else if (userEmailDbObject == null && userPhoneDbObject == null) {
 			userDetailsResponseObj = saveUserDetails(userDetails);
 		} else if (userPhoneDbObject != null && userPhoneDbObject.getUserId() != userDetails.getUserId()) {
 			throw new IOException("This phone number is already registered by someone");
