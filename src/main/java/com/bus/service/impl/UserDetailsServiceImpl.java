@@ -1,6 +1,7 @@
 package com.bus.service.impl;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +29,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		UserDetails userEmailDbObject = userdetailsrepository.findByUserEmail(userDetails.getUserEmail());
 		UserDetails userPhoneDbObject = userdetailsrepository.findByUserPhoneNumber(userDetails.getUserPhoneNumber());
 		Integer userId = userDetails.getUserId();
-		Integer userEmailID = userEmailDbObject == null ? 0 : userEmailDbObject.getUserId();
-		Integer userPhoneID = userPhoneDbObject == null ? 0 : userPhoneDbObject.getUserId();
+		Integer userEmailID = userEmailDbObject == null ? BigDecimal.ZERO : userEmailDbObject.getUserId();
+		Integer userPhoneID = userPhoneDbObject == null ? BigDecimal.ZERO : userPhoneDbObject.getUserId();
 		if (userId != null) {
 			if (userEmailID == userId || userPhoneID == userId) {
-				if ((userPhoneID == userId && userEmailID == 0) || (userEmailID == userId && userPhoneID == 0)) {
+				if ((userPhoneID == userId && userEmailID == BigDecimal.ZERO) (userEmailID == userId && userPhoneID == BigDecimal.ZERO)) {
 					userDetailsResponseObj = saveUserDetails(userDetails);
 				}  else if (userEmailID == userId && userPhoneID == userId) {
 					userDetailsResponseObj = saveUserDetails(userDetails);
