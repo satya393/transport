@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.bus.model.UserDetails;
 import com.bus.repository.UserDetailsRepository;
 import com.bus.service.UserDetailsService;
+import com.bus.constants.CommonConstansts;
+import com.bus.constants.Response;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -23,8 +25,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	}
 
 	@Override
-	public UserDetails saveOrUpdateUserDetails(UserDetails userDetails) throws IOException {
-		UserDetails userDetailsResponseObj = null;
+	public Response saveOrUpdateUserDetails(UserDetails userDetails) throws IOException {
+		Response response = new Response();
+		Response.Status status = new Response.Status();
 		Integer userId = userDetails.getUserId();
 		UserDetails userEmailDbObject = userdetailsrepository.findByUserEmail(userDetails.getUserEmail());
 		UserDetails userPhoneDbObject = userdetailsrepository.findByUserPhoneNumber(userDetails.getUserPhoneNumber());
@@ -32,15 +35,24 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		Integer userIDPhoneDB = userPhoneDbObject == null ? ZERO : userPhoneDbObject.getUserId();
 
 		if ((userIDPhoneDB == userId && userIDEmailDB == ZERO) || (userIDEmailDB == userId && userIDPhoneDB == ZERO)
-				|| (userIDEmailDB == userId && userIDPhoneDB == userId)
-				|| (userEmailDbObject == null && userPhoneDbObject == null)) {
-			userDetailsResponseObj = saveUserDetails(userDetails);
-		} else if (userPhoneDbObject != null && userIDPhoneDB != userId) {
-			throw new IOException("This phone number is already registered by someone");
+				|| (userIDEmailDB == userId && userIDPhoneDB == userId)) {
+			response.setData(saveUserDetails(userDetails));
+			status.setMessage(CommonConstansts.UserDetails.USER_UPDATED);
+			status.setSuccess(CommonConstansts.ResponseStatus.SUCCESS);
+		} else if((userEmailDbObject == null && userPhoneDbObject == null)){
+			response.setData(saveUserDetails(userDetails));
+			status.setMessage(CommonConstansts.UserDetails.USER_SAVED);
+			status.setSuccess(CommonConstansts.ResponseStatus.SUCCESS);
+		}else if (userPhoneDbObject != null && userIDPhoneDB != userId) {
+			status.setMessage(CommonConstansts.UserDetails.PHONE_EXIST);
+			status.setSuccess(CommonConstansts.ResponseStatus.FAIL);
 		} else if (userEmailDbObject != null) {
-			throw new IOException("This EmailID is already registered by someone");
+			status.setMessage(CommonConstansts.UserDetails.EMAIL_EXIST);
+			status.setSuccess(CommonConstansts.ResponseStatus.FAIL);
 		}
-		return userDetailsResponseObj;
+
+		response.setStatus(status);
+		return response;
 	}
 
 	public UserDetails saveUserDetails(UserDetails userDetails) {

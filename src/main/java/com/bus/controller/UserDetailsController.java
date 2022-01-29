@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bus.constants.Response;
 import com.bus.model.UserDetails;
 import com.bus.service.UserDetailsService;
 
@@ -27,7 +28,7 @@ public class UserDetailsController {
 	}
 
 	@PostMapping(value = "save_user")
-	public UserDetails saveOrUpdateUserDetails(@RequestBody UserDetails userDetails) throws IOException {
+	public Response saveOrUpdateUserDetails(@RequestBody UserDetails userDetails) throws IOException {
 
 	return userdetailsservice.saveOrUpdateUserDetails(userDetails);
 	}
