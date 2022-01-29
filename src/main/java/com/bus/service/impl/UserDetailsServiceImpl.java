@@ -29,11 +29,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		UserDetails userEmailDbObject = userdetailsrepository.findByUserEmail(userDetails.getUserEmail());
 		UserDetails userPhoneDbObject = userdetailsrepository.findByUserPhoneNumber(userDetails.getUserPhoneNumber());
 		Integer userId = userDetails.getUserId();
-		Integer userEmailID = userEmailDbObject == null ? BigDecimal.ZERO : userEmailDbObject.getUserId();
-		Integer userPhoneID = userPhoneDbObject == null ? BigDecimal.ZERO : userPhoneDbObject.getUserId();
+		Integer userEmailID = userEmailDbObject == null ? BigDecimal.ZERO.intValue() : userEmailDbObject.getUserId();
+		Integer userPhoneID = userPhoneDbObject == null ? BigDecimal.ZERO.intValue() : userPhoneDbObject.getUserId();
 		if (userId != null) {
 			if (userEmailID == userId || userPhoneID == userId) {
-				if ((userPhoneID == userId && userEmailID == BigDecimal.ZERO) (userEmailID == userId && userPhoneID == BigDecimal.ZERO)) {
+				if ((userPhoneID == userId && userEmailID == BigDecimal.ZERO.intValue()) || (userEmailID == userId && userPhoneID == BigDecimal.ZERO.intValue())) {
 					userDetailsResponseObj = saveUserDetails(userDetails);
 				}  else if (userEmailID == userId && userPhoneID == userId) {
 					userDetailsResponseObj = saveUserDetails(userDetails);
