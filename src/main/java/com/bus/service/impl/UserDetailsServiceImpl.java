@@ -1,11 +1,13 @@
 package com.bus.service.impl;
 
 import java.io.IOException;
+import java.io.LineNumberInputStream;
 import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.NumberUtils;
 
 import com.bus.model.UserDetails;
 import com.bus.repository.UserDetailsRepository;
@@ -29,20 +31,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		UserDetails userEmailDbObject = userdetailsrepository.findByUserEmail(userDetails.getUserEmail());
 		UserDetails userPhoneDbObject = userdetailsrepository.findByUserPhoneNumber(userDetails.getUserPhoneNumber());
 		Integer userId = userDetails.getUserId();
+
 		Integer userEmailID = userEmailDbObject == null ? BigDecimal.ZERO.intValue() : userEmailDbObject.getUserId();
 		Integer userPhoneID = userPhoneDbObject == null ? BigDecimal.ZERO.intValue() : userPhoneDbObject.getUserId();
-		if (userId != null) {
-			if (userEmailID == userId || userPhoneID == userId) {
-				if ((userPhoneID == userId && userEmailID == BigDecimal.ZERO.intValue()) || (userEmailID == userId && userPhoneID == BigDecimal.ZERO.intValue())) {
-					userDetailsResponseObj = saveUserDetails(userDetails);
-				}  else if (userEmailID == userId && userPhoneID == userId) {
-					userDetailsResponseObj = saveUserDetails(userDetails);
-				} else {
-					userDetailsResponseObj = saveValidateUserDetails(userDetails, userEmailDbObject, userPhoneDbObject);
-				}
-			} else {
-				userDetailsResponseObj = saveValidateUserDetails(userDetails, userEmailDbObject, userPhoneDbObject);
-			}
+		if ((userPhoneID == userId && userEmailID == BigDecimal.ZERO.intValue())
+				|| (userEmailID == userId && userPhoneID == BigDecimal.ZERO.intValue())
+				|| (userEmailID == userId && userPhoneID == userId)) {
+			userDetailsResponseObj = saveUserDetails(userDetails);
 		} else {
 			userDetailsResponseObj = saveValidateUserDetails(userDetails, userEmailDbObject, userPhoneDbObject);
 		}
