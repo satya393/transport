@@ -26,33 +26,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails saveOrUpdateUserDetails(UserDetails userDetails) throws IOException {
 		UserDetails userDetailsResponseObj = null;
+		Integer userId = userDetails.getUserId();
 		UserDetails userEmailDbObject = userdetailsrepository.findByUserEmail(userDetails.getUserEmail());
 		UserDetails userPhoneDbObject = userdetailsrepository.findByUserPhoneNumber(userDetails.getUserPhoneNumber());
-		Integer userId = userDetails.getUserId();
 		Integer userEmailID = userEmailDbObject == null ? BigDecimal.ZERO.intValue() : userEmailDbObject.getUserId();
 		Integer userPhoneID = userPhoneDbObject == null ? BigDecimal.ZERO.intValue() : userPhoneDbObject.getUserId();
-		if (userId != null) {
-			if (userEmailID == userId || userPhoneID == userId) {
-				if ((userPhoneID == userId && userEmailID == BigDecimal.ZERO.intValue()) || (userEmailID == userId && userPhoneID == BigDecimal.ZERO.intValue())) {
-					userDetailsResponseObj = saveUserDetails(userDetails);
-				}  else if (userEmailID == userId && userPhoneID == userId) {
-					userDetailsResponseObj = saveUserDetails(userDetails);
-				} else {
-					userDetailsResponseObj = saveValidateUserDetails(userDetails, userEmailDbObject, userPhoneDbObject);
-				}
-			} else {
-				userDetailsResponseObj = saveValidateUserDetails(userDetails, userEmailDbObject, userPhoneDbObject);
-			}
-		} else {
-			userDetailsResponseObj = saveValidateUserDetails(userDetails, userEmailDbObject, userPhoneDbObject);
-		}
-		return userDetailsResponseObj;
-	}
 
-	private UserDetails saveValidateUserDetails(UserDetails userDetails, UserDetails userEmailDbObject,
-			UserDetails userPhoneDbObject) throws IOException {
-		UserDetails userDetailsResponseObj = null;
-		if (userEmailDbObject == null && userPhoneDbObject == null) {
+		if ((userPhoneID == userId && userEmailID == BigDecimal.ZERO.intValue())
+				|| (userEmailID == userId && userPhoneID == BigDecimal.ZERO.intValue())
+				|| (userEmailID == userId && userPhoneID == userId)) {
+			userDetailsResponseObj = saveUserDetails(userDetails);
+		} else if (userEmailDbObject == null && userPhoneDbObject == null) {
 			userDetailsResponseObj = saveUserDetails(userDetails);
 		} else if (userPhoneDbObject != null && userPhoneDbObject.getUserId() != userDetails.getUserId()) {
 			throw new IOException("This phone number is already registered by someone");
