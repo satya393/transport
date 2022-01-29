@@ -32,7 +32,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		Integer userPhoneID = userPhoneDbObject == null ? 0 : userPhoneDbObject.getUserId();
 		if (userId != null) {
 			if (userEmailID == userId || userPhoneID == userId) {
-				userDetailsResponseObj = saveUserDetails(userDetails);
+				if (userPhoneID == userId && userEmailID == 0) {
+					userDetailsResponseObj = saveUserDetails(userDetails);
+				} else if (userEmailID == userId && userPhoneID == 0) {
+					userDetailsResponseObj = saveUserDetails(userDetails);
+				}
+				else {
+					userDetailsResponseObj = saveValidateUserDetails(userDetails, userEmailDbObject, userPhoneDbObject);
+				}
 			} else {
 				userDetailsResponseObj = saveValidateUserDetails(userDetails, userEmailDbObject, userPhoneDbObject);
 			}
@@ -47,7 +54,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		UserDetails userDetailsResponseObj = null;
 		if (userEmailDbObject == null && userPhoneDbObject == null) {
 			userDetailsResponseObj = saveUserDetails(userDetails);
-		} else if (userPhoneDbObject != null&& userPhoneDbObject.getUserId()!=userDetails.getUserId()) {
+		} else if (userPhoneDbObject != null && userPhoneDbObject.getUserId() != userDetails.getUserId()) {
 			throw new IOException("This phone number is already registered by someone");
 		} else if (userEmailDbObject != null) {
 			throw new IOException("This EmailID is already registered by someone");
