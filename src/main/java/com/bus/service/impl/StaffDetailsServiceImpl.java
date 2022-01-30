@@ -31,7 +31,7 @@ public class StaffDetailsServiceImpl implements StaffDetailsService {
 		Response response = new Response();
 		Response.Status status = new Response.Status();
 		String staffEmailID = staffDetails.getStaffEmail();
-		if (staffEmailID == null) {
+		if (staffEmailID != null && !staffEmailID.isBlank()) {
 			StaffDetails staffEmailDbObject = staffdetailsrepository.findByStaffEmail(staffEmailID);
 			if (staffEmailDbObject != null) {
 				response.setData(staffEmailDbObject);
