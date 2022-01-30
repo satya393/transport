@@ -33,7 +33,7 @@ public class StaffDetailsController {
 		return staffdetailsservice.saveStaffDetails(staffDetails);
 	}
 
-	@PostMapping(value = "staff_Sign_in")
+	@PostMapping(value = "staff_sign_in")
 	public Response saveSign_in_StaffDetails(@RequestBody StaffDetails staffDetails) {
 		return staffdetailsservice.saveSign_in_StaffDetails(staffDetails);
 

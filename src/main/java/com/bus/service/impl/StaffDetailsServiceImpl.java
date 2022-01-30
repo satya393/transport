@@ -31,21 +31,20 @@ public class StaffDetailsServiceImpl implements StaffDetailsService {
 		Response response = new Response();
 		Response.Status status = new Response.Status();
 		String staffEmailID = staffDetails.getStaffEmail();
-		StaffDetails staffEmailDbObject = staffdetailsrepository.findByStaffEmail(staffDetails.getStaffEmail());
-		if(staffEmailID == null){
-			
-			if(staffEmailDbObject != null){
+		if (staffEmailID == null) {
+			StaffDetails staffEmailDbObject = staffdetailsrepository.findByStaffEmail(staffEmailID);
+			if (staffEmailDbObject != null) {
+				response.setData(staffEmailDbObject);
 				status.setMessage(CommonConstansts.StaffDetails.EMAIL_EXIST);
 				status.setSuccess(CommonConstansts.ResponseStatus.SUCCESS);
-//			response.setData(saveSign_in_StaffDetails(staffDetails));
-			}else{
-				status.setSuccess(CommonConstansts.ResponseStatus.FAIL);}
-			status.setSuccess(CommonConstansts.ResponseStatus.SUCCESS);
-
-		}else{
+			} else {
+				status.setMessage(CommonConstansts.StaffDetails.EMAIL_NOT_FOUND);
+				status.setSuccess(CommonConstansts.ResponseStatus.FAIL);
+			}
+		} else {
 			status.setMessage(CommonConstansts.StaffDetails.EMPTY_EMAIL_EXIST);
-			status.setSuccess(CommonConstansts.ResponseStatus.FAIL);}
-		response.setData(ss);
+			status.setSuccess(CommonConstansts.ResponseStatus.FAIL);
+		}
 		response.setStatus(status);
 		return response;
 	}

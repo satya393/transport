@@ -16,11 +16,11 @@ public interface CommonConstansts {
 		String USER_SAVED = "User Detais Saved Successfully!!";
 		String USER_UPDATED = "User Detais Updated Successfully!!";
 	}
-	
+
 	public interface StaffDetails {
 		String EMAIL_EXIST = "User Email already exists!!";
 		String EMPTY_EMAIL_EXIST = "Please Fill The Email Feald!!";
+		String EMAIL_NOT_FOUND = "User Email Not Found!!";
 	}
-	
 
 }
