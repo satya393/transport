@@ -7,6 +7,10 @@ import com.bus.model.StaffDetails;
 
 @Repository
 public interface StaffDetailsRepository extends JpaRepository<StaffDetails, Integer>{
+
+//	StaffDetails findbystaffEmail(String staffEmail);
+
+	StaffDetails findByStaffEmail(String staffEmail);
 	
 	
 	

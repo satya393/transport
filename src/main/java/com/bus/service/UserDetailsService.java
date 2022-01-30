@@ -1,6 +1,6 @@
 package com.bus.service;
 
-import java.io.IOException;
+
 import java.util.List;
 
 import com.bus.constants.Response;
@@ -10,6 +10,6 @@ public interface UserDetailsService {
 
 	List<UserDetails> getUserDetails();
 
-	Response saveOrUpdateUserDetails(UserDetails userDetails) throws IOException;
+	Response saveOrUpdateUserDetails(UserDetails userDetails) ;
 
 }

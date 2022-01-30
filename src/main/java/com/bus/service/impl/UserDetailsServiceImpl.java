@@ -1,6 +1,6 @@
 package com.bus.service.impl;
 
-import java.io.IOException;
+//import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	}
 
 	@Override
-	public Response saveOrUpdateUserDetails(UserDetails userDetails) throws IOException {
+	public Response saveOrUpdateUserDetails(UserDetails userDetails) {
 		Response response = new Response();
 		Response.Status status = new Response.Status();
 		Integer userId = userDetails.getUserId();

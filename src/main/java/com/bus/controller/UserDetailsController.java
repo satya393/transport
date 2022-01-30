@@ -30,7 +30,7 @@ public class UserDetailsController {
 	@PostMapping(value = "save_user")
 	public Response saveOrUpdateUserDetails(@RequestBody UserDetails userDetails) throws IOException {
 
-	return userdetailsservice.saveOrUpdateUserDetails(userDetails);
+		return userdetailsservice.saveOrUpdateUserDetails(userDetails);
 	}
 
 }
