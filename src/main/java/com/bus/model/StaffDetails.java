@@ -18,6 +18,7 @@ public class StaffDetails {
 	public Integer staffNumber;
 	public String staffAddress;
 	public Boolean staffStatus;
+	public String staffEmail;
 
 	public Integer getStaffId() {
 		return staffId;
@@ -66,5 +67,15 @@ public class StaffDetails {
 	public void setStaffStatus(Boolean staffStatus) {
 		this.staffStatus = staffStatus;
 	}
+
+	public String getStaffEmail() {
+		return staffEmail;
+	}
+
+	public void setStaffEmail(String staffEmail) {
+		this.staffEmail = staffEmail;
+	}
+	
+	
 
 }
